@@ -1,53 +1,38 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/H6lPFq0J)
-# Computing 2 Coursework Submission.
-**CID**: [YOUR CID]
+# Play game
+Tic-Tac-Toe is a
+[Tic-tac-toe](https://en.wikipedia.org/wiki/Tic-tac-toe)
+style game.
 
-This is the submission template for your Computing 2 Applications coursework submission.
+![Screenshot of tic_tac_toe gameplay](tic_tac_toe.png)
 
-## Checklist
-### Install dependencies locally
-This template relies on a a few packages from the Node Package Manager, npm.
-To install them run the following commands in the terminal.
-```properties
-npm install
-```
-These won't be uploaded to your repository because of the `.gitignore`.
-I'll run the same commands when I download your repos.
+The game is a turn-based, board-based web application where two players take turns placing their marks on a 3 by 3 board. Player X always starts first, followed by Player O. The game checks for standard Tic-Tac-Toe winning conditions, including horizontal, vertical and diagonal lines.
 
-### Game Module – API
-*You will produce an API specification, i.e. a list of function names and their signatures, for a Javascript module that represents the state of your game and the operations you can perform on it that advances the game or provides information.*
+The current version is implemented in a browser-based web app,
+`web-app/index.html`.
 
-- [ ] Include a `.js ` module file in `/web-app` containing the API using `jsdoc`.
-- [ ] Update `/jsdoc.json` to point to this module in `.source.include` (line 7)
-- [ ] Compile jsdoc using the run configuration `Generate Docs`
-- [ ] Check the generated docs have compiled correctly.
+This file contains the HTML structure, CSS styling and JavaScript logic required to run the game. The application uses an HTML5 canvas to draw the board and player marks.
+The JavaScript code manages the game state, including the current player, board positions, win checking, draw checking and game reset behaviour.
 
-### Game Module – Implementation
-*You will implement, in Javascript, the module you specified above. Such that your game can be simulated in code, e.g. in the debug console.*
+The main game logic is contained inside the `playGame()` function. This function initialises the canvas, stores the board state, draws the game board, handles player clicks, places X and O marks, checks whether a player has won, checks for a draw and updates the status message shown to the user.
 
-- [ ] The file above should be fully implemented.
+The web app includes a simple interface with:
 
-### Unit Tests – Specification
-*For the Game module API you have produced, write a set of unit tests descriptions that specify the expected behaviour of one aspect of your API, e.g. you might pick the win condition, or how the state changes when a move is made.*
+* a game title;
+* a status message showing the current player or result;
+* a canvas-based Tic-Tac-Toe board;
+* a button for starting or resetting the game.
 
-- [ ] Write unit test definitions in `/web-app/tests`.
-- [ ] Check the headings appear in the Testing sidebar.
+## Installation
 
-### Unit Tests – Implementation
-*Implement in code the unit tests specified above.*
+* Clone the repository.
+* Open `web-app/index.html` in a web browser.
+* No additional installation is required for the current browser-based version.
 
-- [ ] Implement the tests above.
+## How to Play
 
-### Web Application
-*Produce a web application that allows a user to interface with your game module.*
-
-- Implement in `/web-app`
-  - [ ] `index.html`
-  - [ ] `default.css`
-  - [ ] `main.js`
-  - [ ] Any other files you need to include.
-
-### Finally
-- [ ] Push to GitHub.
-- [ ] Sync the changes.
-- [ ] Check submission on GitHub website.
+* Click **New Game** to start.
+* Player X takes the first turn.
+* Players take turns clicking an empty cell on the board.
+* The first player to place three marks in a row, column or diagonal wins.
+* If all cells are filled and no player has won, the game ends in a draw.
+* Click **New Game** again to restart the game.

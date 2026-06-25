@@ -1,16 +1,22 @@
 {
-  "name": "computing-2-submission",
-  "type": "module",
-  "version": "1.0.0",
-  "description": "",
-  "main": "web-app/Module.js",
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "ramda": "^0.32.0"
-  },
-  "devDependencies": {
-    "docdash": "^2.0.2",
-    "mocha": "^11.7.5"
-  }
+    "name": "web-app",
+    "version": "1.0.0",
+    "description": "",
+    "license": "ISC",
+    "author": "",
+    "type": "commonjs",
+    "main": "index.js",
+    "directories": {
+        "test": "tests"
+    },
+    "scripts": {
+        "serve": "http-server ./web-app -c-1",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "devDependencies": {
+        "chai": "^6.2.2",
+        "http-server": "^14.1.1",
+        "jest": "^30.4.2",
+        "mocha": "^11.3.0"
+    }
 }

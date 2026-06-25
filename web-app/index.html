@@ -1,9 +1,186 @@
-<!-- In HTML Comments are written like this -->
-<!-- They can all be removed for your apps -->
-<!doctype html> <!-- This first line tells browsers to expect modern standard html 5 -->
-<html lang="en-gb"> <!-- This is indicates the page is written in British English, useful for accessibility -->
-<meta charset="utf-8"> <!-- This indicates how the file is encoded. utf-8 is standard -->
-<title>Your Web-app Title</title> <!-- All pages need a title, this will be displayed in the browser's title bar -->
-<link rel="stylesheet" href="default.css"> <!-- Import style sheet – default.css -->
-<link rel="icon" href="./assets/favicon.png"> <!-- Import 'Favorites Icon' – favicon.png -->
-<script type="module" src="main.js"></script> <!-- Load the main script. Must be type="module". Have only one of these -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" /> <!-- The file is encoded using utf-8 as standard -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Tic-Tac-Toe Game</title> <!-- Define the name of the web app 'Tic-Tac-Toe Game'-->
+        <style>
+            body {
+                padding: 10px;
+            }
+            h1 {
+                text-align: center;
+            }
+            #can {
+                margin: 30px auto;
+                display: block;
+            }
+            #status {
+                margin: 10px auto;
+                width: 180px;
+                height: 32px;
+                line-height: 32px;
+                text-align: center;
+                background: #ccc9;
+                border: none;
+                border-radius: 10px;
+            }
+            #reset {
+                margin: 8px auto;
+                padding: 10px 12px;
+                width: 120px;
+                display: block;
+                font-size: 16px;
+                cursor: pointer;
+                color: #fff;
+                background: #69f;
+                border: none;
+                border-radius: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Tic-Tac-Toe Game</h1>
+        <div id="status">Please tap "New Game"</div>
+        <canvas id="can"></canvas>
+        <button id="reset">New Game</button>
+        <script>
+            function playGame() {
+                // Local variables of a single function
+                const cw = 300;
+                const wins = [
+                    [0, 1, 2],
+                    [3, 4, 5],
+                    [6, 7, 8],
+                    [0, 3, 6],
+                    [1, 4, 7],
+                    [2, 5, 8],
+                    [0, 4, 8],
+                    [2, 4, 6],
+                ];
+                // Game status：0= not started，1=begin, 2=end
+                let gameStatus = 0;
+                const board = Array(9).fill(null);
+                const can = document.getElementById("can");
+                can.width = can.height = cw;
+                const cs = can.width / 3;
+                const ctx = can.getContext("2d");
+                // Status message
+                const oStatus = document.getElementById("status");
+                // Reset button
+                const oReset = document.getElementById("reset");
+                // Current player
+                let current = "X";
+                // Check for a win
+                const checkWin = () => {
+                    return wins.some((el) => {
+                        const [a, b, c] = el;
+                        return (
+                            board[a] &&
+                            board[a] === board[b] &&
+                            board[a] === board[c]
+                        );
+                    });
+                };
+                // Check for a draw
+                const checkTie = () => {
+                    return board.every((el) => el !== null);
+                };
+                // Draw the board
+                const drawBoard = () => {
+                    ctx.clearRect(0, 0, can.width, can.height);
+                    ctx.lineWidth = 4;
+                    ctx.strokeStyle = "#333";
+                    ctx.beginPath();
+                    // Draw vertical lines
+                    ctx.moveTo(cs, 0);
+                    ctx.lineTo(cs, can.height);
+                    ctx.moveTo(cs, 0);
+                    ctx.lineTo(cs, can.height);
+                    ctx.moveTo(cs * 2, 0);
+                    ctx.lineTo(cs * 2, can.height);
+                    ctx.stroke();
+                    // Draw horizontal lines
+                    ctx.beginPath();
+                    ctx.moveTo(0, cs);
+                    ctx.lineTo(can.width, cs);
+                    ctx.moveTo(0, cs * 2);
+                    ctx.lineTo(can.width, cs * 2);
+                    ctx.stroke();
+                };
+                // Draw the player's mark
+                const drawMark = (idx, player) => {
+                    const x = (idx % 3) * cs + cs / 2;
+                    const y = Math.floor(idx / 3) * cs + cs / 2;
+                    console.log(x, y);
+                    const offset = 25;
+                    ctx.lineWidth = 6;
+                    ctx.strokeStyle = "#666";
+                    ctx.beginPath();
+                    if (player === "X") {
+                        ctx.moveTo(x - offset, y - offset);
+                        ctx.lineTo(x + offset, y + offset);
+                        ctx.moveTo(x + offset, y - offset);
+                        ctx.lineTo(x - offset, y + offset);
+                    } else {
+                        ctx.arc(x, y, offset, 0, Math.PI * 2);
+                    }
+                    ctx.stroke();
+                };
+                // Reset the game
+                const resetGame = () => {
+                    gameStatus = 1;
+                    drawBoard();
+                    current = "X";
+                    oStatus.innerText = "Player X's turn";
+                    oReset.innerText = "Reset";
+                    board.fill(null);
+                };
+                // Add the button click event listener
+                oReset.addEventListener("click", resetGame);
+                // Canvas click handler
+                const handleClick = (e) => {
+                    if (gameStatus !== 1) return;
+                    // Get the clicked cell coordinates
+                    const rect = can.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    // Calculate the row and column
+                    const col = Math.floor(x / cs);
+                    const row = Math.floor(y / cs);
+                    // Convert row and column values from 0-2 into board index 0-8
+                    const idx = 3 * row + col;
+                    console.log("Click:", idx);
+                    // Return if the cell is already occupied
+                    if (board[idx]) return;
+                    // Place the mark
+                    board[idx] = current;
+                    console.log(board);
+                    drawMark(idx, current);
+                    // Check for a win
+                    if (checkWin()) {
+                        oStatus.innerText = `Player ${current} wins!`;
+                        oReset.innerText = "New Game";
+                        gameStatus = 2;
+                        return;
+                    }
+                    // Check for a draw
+                    if (checkTie()) {
+                        oStatus.innerText = `DRAW!`;
+                        oReset.innerText = "New Game";
+                        gameStatus = 2;
+                        return;
+                    }
+                    // Switch player
+                    current = current === "X" ? "O" : "X";
+                    oStatus.innerText = `Player ${current}'s turn`;
+                };
+                // Listen for canvas click events
+                can.addEventListener("click", handleClick);
+            }
+            window.onload = () => {
+                playGame();
+            };
+        </script>
+    </body>
+</html>
